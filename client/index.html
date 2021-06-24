@@ -5,11 +5,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Chat app</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+      integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
+      crossorigin="anonymous"
+    />
 
     <link rel="stylesheet" href="./style.css" />
-    <script defer src="/../node_modules/@fortawesome/fontawesome-free/js/solid.js"></script>
-    <script defer src="/../node_modules/@fortawesome/fontawesome-free/js/fontawesome.js"></script>
+    <script defer src="./static/js/solid.js"></script>
+    <script defer src="./static/js//fontawesome.js"></script>
   </head>
   <body>
     <div class="container-fluid px-0 min-100 d-flex flex-column">
@@ -24,23 +29,170 @@
       >
         <a class="navbar-brand" href="#">ChatApp</a>
       </nav>
-    
 
-    <div class="row flex-grow-1 d-flex flex-row mx-0">
-      <div class="col-2 d-flex flex-column border-right flex-grow-1 px-0">users</div>
-      <div class="col-10 d-flex flex-column flex-grow-1 px-0">
-        
-        <div class="pl-2 flex-grow-0 username">Username</div>
-        <div class="flex-grow-1 d-flex flex-column-reverse border-bottom border-top ">Messages</div>
-        <div class="flex-grow-0 px-2 py-2 d-flex justify-content-end align-items-center">
-          <input class="mx-2" placeholder="Aa" type="text" />
-          <button type="button" class="btn btn-light btn-lg btn-circle "><i class="fas fa-paper-plane"></i></button>
+      <div class="row flex-grow-1 d-flex flex-row mx-0">
+        <div class="col-2 border-right px-0">
+          <div>
+            <div class="my-username border-bottom pl-2 align-self-end"></div>
+          </div>
+
+          <ul class="nav nav-tabs user-tabs flex-column">
+            <!--
+            <li class="nav-item">
+              <a class="nav-link" href="#IDStefan" data-toggle="tab">
+                <div class="specific-username">Stefan</div>
+                <--<div class = "preview"> Cao sta radis </div> --/>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="#IDSofija" data-toggle="tab">Sofija</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link font-weight-bolder" href="#IDTina" data-toggle="tab"> Tina</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#IDAntol" data-toggle="tab">Antol</a>
+            </li>
+          --></ul>
+        </div>
+        <div class="col-10 px-0 message-display d-flex flex-column-reverse">
+          <div
+            class="
+              px-2
+              py-2
+              d-flex
+              justify-content-end
+              align-items-center
+              border-top
+              input-message
+            "
+          >
+            <input
+              class="mx-2"
+              placeholder="Aa"
+              type="text"
+              id="message-text-input"
+            />
+            <button
+              type="button"
+              class="btn btn-light btn-lg btn-circle"
+              id="send-message"
+            >
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </div>
+          <div class="tab-content user-messages-tabs">
+            <!--
+            <div role="tabpanel" class="tab-pane fade" id="empty"></div>
+            
+           <div role="tabpanel" class="tab-pane fade" id="IDStefan"> 
+              <div class="pl-2 username border-bottom username">Stefan</div>
+              <div class="tab-content d-flex flex-column-reverse" id="messages">
+                <div class="d-flex flex-row-reverse mx-2">
+                  <div
+                    class="
+                      message
+                      my-message
+                      text-break
+                      px-3
+                      py-2
+                      my-1
+                      mx-2
+                      text-left
+                    "
+                  >
+                    a
+                  </div>
+                  <div class="spacer"></div>
+                </div>
+
+                <div class="d-flex flex-row mx-2">
+                  <div
+                    class="
+                      message
+                      not-my-message
+                      text-break
+                      px-3
+                      py-2
+                      my-1
+                      mx-2
+                      text-left
+                    "
+                  >
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                    do eiusmod tempor incididunt ut labore et dolore magna
+                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    Duis aute irure dolor in reprehenderit in voluptate velit
+                    esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+                    occaecat cupidatat non proident, sunt in culpa qui officia
+                    deserunt mollit anim id est laborum.
+                  </div>
+                  <div class="spacer"></div>
+                </div>
+              </div>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="IDSofija">
+              <div class="pl-2 username border-bottom username">Sofija</div>
+              <div class="tab-content d-flex flex-column-reverse" id="messages">
+                <div class="d-flex flex-row-reverse mx-2">
+                  <div
+                    class="
+                      message
+                      my-message
+                      text-break
+                      px-3
+                      py-2
+                      my-1
+                      mx-2
+                      text-left
+                    "
+                  >
+                    Cao Sofija
+                  </div>
+                  <div class="spacer"></div>
+                </div>
+
+                <div class="d-flex flex-row mx-2">
+                  <div
+                    class="
+                      message
+                      not-my-message
+                      text-break
+                      px-3
+                      py-2
+                      my-1
+                      mx-2
+                      text-left
+                    "
+                  >
+                    Cao Strahinja
+                  </div>
+                  <div class="spacer"></div>
+                </div>
+              </div>
+            </div>-->
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+      integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"
+      integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF"
+      crossorigin="anonymous"
+    ></script>
+    <script src="./bundle.js"></script>
   </body>
 </html>

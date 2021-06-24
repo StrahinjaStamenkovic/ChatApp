@@ -2,16 +2,15 @@
   "name": "projekat-1",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "index.js",
-    "webpack-build": "webpack --config webpack.config.js",
-    "webpack-watch": "webpack --watch webpack.config.js",
-    "database-api": "json-server db.json --watch"
+    "server": "nodemon server.js",
+    "webpack-build": "webpack --config ./webpack.config.js",
+    "webpack-watch": "webpack --watch --config ./webpack.config.js"
   },
   "nodemonConfig": {
-    "watch": "server/*"
+    "watch": ""
   },
   "author": "",
   "license": "ISC",
