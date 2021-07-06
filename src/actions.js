@@ -23,17 +23,15 @@ const enterKeyPress$ = fromEvent(
 
 // Message message send stream
 const sendMessage$ = merge(sendButtonClick$, enterKeyPress$).pipe(
-  map(() => document.querySelector("input#message-text-input").value),
+  map(() => $("input#message-text-input").val()),
   filter((message) => message),
-  tap(
-    (message) => (document.querySelector("input#message-text-input").value = "")
-  )
+  tap((message) => $("input#message-text-input").val(""))
 );
 
 // Message stream
 const submitAction$ = sendMessage$.pipe(
   //withLatestFrom(userSelectChange$),
-  map((message) => ({ message, to: currentlySelectedUser}))
+  map((message) => ({ message, to: currentlySelectedUser }))
 );
 
 export default submitAction$;

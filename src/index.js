@@ -21,10 +21,11 @@ username$.subscribe((username) => {
 const submitMessage$ = submitAction$.pipe(
   withLatestFrom(username$),
   tap(([data, username]) => {
-    console.log(data.message); //currentlySelectedUser.id?
-    addMessage({ id: "", username: username }, data.message, data.to);
+    console.log(data.message);
+    console.log(data.to);
+    addMessage({ id: "", username: username }, data.message, data.to, true);
   }),
-  map(([data]) => data)
+  map(([data, username]) => data)
 );
 
 // Send username to server
@@ -34,14 +35,15 @@ emitOnConnect(username$).subscribe(({ socket, data }) => {
 
 // Send chat messages to server
 emitOnConnect(submitMessage$).subscribe(({ socket, data }) => {
-  console.log(`${socket} , ${data} `);
+  console.log(socket);
+  console.log(data);
   socket.emit("chat message", data);
 });
 
 // Listen for chat messages
 listenOnConnect("chat message").subscribe(({ from, message, to }) => {
   console.log(`${from} , ${message} , ${to}`);
-  addMessage(from, message, to);
+  addMessage(from, message, to, false);
 });
 
 // Listen for list of all connected users
@@ -58,6 +60,7 @@ listenOnConnect("new user").subscribe(({ id, username }) => {
 
 // Listen for user removals
 listenOnConnect("remove user").subscribe((id) => {
+  // console.log("Removing user with id : " + id);
   removeUser(id);
 });
 

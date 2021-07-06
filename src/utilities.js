@@ -16,7 +16,7 @@ export function requestUsername() {
   return myUsername;
 }
 
-export function addMessage(from, message, to) {
+export function addMessage(from, message, to, myMessage) {
   const flexDirection =
     from.username === myUsername ? "flex-row-reverse" : "flex-row";
   const messageOwner =
@@ -26,12 +26,8 @@ export function addMessage(from, message, to) {
   console.log(message);
   console.log(to);
   const nameTag = to.id === "everyone" ? from.username + ": <br />" : "";
- 
-  let tab = document.querySelector(
-    `.tab-pane#${to.id} > .tab-content#messages`
-  );
-  tab.insertAdjacentHTML(
-    "afterbegin",
+  //const myMessage = from.username===myUsername;//temporary,remove later
+  $(`.tab-pane#${myMessage?to.id:from.id} > .messages`).prepend(
     `
     <div class="d-flex ${flexDirection} mx-2">
       <div class= "
@@ -51,8 +47,9 @@ export function addMessage(from, message, to) {
     </div>
     `
   );
-  // scroll only on my messages
-  if (from.username === myUsername) tab.scrollTo(0, tab.scrollHeight);
+  // Scroll to bottom only on my messages
+  if (from.username === myUsername)
+    $(`.tab-pane#${to.id} > .messages`).scrollTop(0);
 }
 
 // Changes to users tabs selection
@@ -63,11 +60,10 @@ export function addMessage(from, message, to) {
 export function addUser(id, username) {
   const active = id === "everyone" ? "active" : "";
   const show = id === "everyone" ? "show" : "";
-  document.querySelector(".user-tabs").insertAdjacentHTML(
-    "beforeend",
+  $(".user-tabs").append(
     `
     <li class="nav-item">
-      <a class="nav-link ${active}" href="#${id}" data-toggle="tab">
+      <a class="nav-link px-1 ${active}" href="#${id}" data-toggle="tab">
         <div class="specific-username">${username}</div>
       </a>
     </li>
@@ -78,47 +74,41 @@ export function addUser(id, username) {
     currentlySelectedUser = { id: id, username: username };
     console.log(currentlySelectedUser);
   });
-
-  /* let newUserSelect$ = fromEvent(
+  /* 
+  let newUserSelect$ = fromEvent(
     $(`.nav-tabs a[href="#${id}"]`),
     "shown.bs.tab"
   ).pipe(map((e) => e.target.href.slice(e.target.href.indexOf("#") + 1)));
   userSelectChange$ = merge(userSelectChange$, newUserSelect$);
   */
-  document.querySelector(".user-messages-tabs").insertAdjacentHTML(
-    "beforeend",
+  $(".user-messages-tabs").append(
     `
     <div role="tabpanel" class="tab-pane fade ${active} ${show}" id="${id}"> 
-      <div class="pl-2 username border-bottom username">${username}</div>
-      <div class="tab-content d-flex flex-column-reverse" id="messages"></div>
+      <div class="pl-1 username border-bottom username">${username}</div>
+      <div class="tab-content d-flex flex-column-reverse messages"></div>
     </div>
     `
   );
 }
 
 export const clearUsers = () => {
-  document.querySelector(".user-tabs").innerHTML = "";
-  document.querySelector(".user-messages-tabs").innerHTML = "";
+  $(".user-tabs").empty();
+  $(".user-messages-tabs").empty();
 };
 
 export const removeUser = (id) => {
-  let tabToRemove = document.querySelector(
-    `.user-tabs > li.nav-item > a[href="#${id}"]`
-  );
+  let tabToRemove = $(`a[href="#${id}"]`);
+  console.log(tabToRemove);
   if (tabToRemove) {
-    if (tabToRemove.classList.contains("active"))
-      document
-        .querySelector(`.user-tabs > li.nav-item > a[href="#${id}"]`)
-        .classList.add("active");
-    tabToRemove.parentNode.parentNode.removeChild(tabToRemove.parentNode);
+    console.log(tabToRemove);
+    if (tabToRemove.hasClass("active"))
+      $(`a[href='#everyone']`).addClass("active");
+    tabToRemove.parent().remove();
   }
-  tabToRemove = document.querySelector(`#${id}`);
+  tabToRemove = $(`#${id}`);
   if (tabToRemove) {
-    if (
-      tabToRemove.classList.contains("active") &&
-      tabToRemove.classList.contains("show")
-    )
-      document.querySelector(`#everyone`).classList.add("active", "show");
-    tabToRemove.parentNode.removeChild(tabToRemove);
+    if (tabToRemove.hasClass("active") && tabToRemove.hasClass("show"))
+      $(`#everyone`).addClass("active show");
+    tabToRemove.remove();
   }
 };
