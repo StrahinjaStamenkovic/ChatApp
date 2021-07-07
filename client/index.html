@@ -18,23 +18,25 @@
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
-    <div class="container-fluid px-0 min-100 d-flex flex-column">
-      <nav
+    <nav
         class="
           navbar navbar-fixed-top navbar-light
           bg-light
           justify-content-center
           px-0
+          py-0
           flex-shrink-0
         "
       >
-        <a class="navbar-brand">ChatApp</a>
+        <a class="navbar-brand mx-0 my-0">ChatApp</a>
       </nav>
+    <div class="container-fluid px-0  d-flex flex-column">
+      
 
       <div class="row flex-grow-1 d-flex flex-row mx-0">
         <div class="col-2 border-right px-0">
           <div>
-            <div class="my-username border-bottom pl-2 align-self-end"></div>
+            <h5 class="my-username border-bottom pl-1 my-0 align-text-bottom text-break d-flex align-items-end"></h5>
           </div>
 
           <ul class="nav nav-tabs user-tabs flex-column">
@@ -175,6 +177,24 @@
                 </div>
               </div>
             </div>-->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="usernameModal" data-backdrop="static" data-keyboard="false" tabindex="-1"  aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">Enter your username</h5>
+          </div>
+          <div class="modal-body">
+            <label for="usernameInput">Username:</label>
+            <input type="text" id="usernameInput" required/>
+          </div>
+          <div class="modal-footer">
+         
+            <button type="button" class="btn btn-primary" id="usernameSubmitButton">Enter</button>
           </div>
         </div>
       </div>

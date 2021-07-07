@@ -5,14 +5,14 @@
 html,
 body {
   height: 100%;
+  font-family: Segoe UI Historic, Segoe UI, Helvetica, Arial, sans-serif;
 }
 
 .min-100 {
   min-height: 100%;
 }
 .username {
-  /*font-size: xx-large;*/
-  min-height: 50px;
+  min-height: 5vh;
 }
 .btn-circle.btn-lg {
   width: 40px;
@@ -53,9 +53,10 @@ input[type="text"]:focus {
   /*font-size: larger;*/
 }
 .my-username {
-  /*font-size: larger;*/
+  font-size: larger;
   height: 5vh;
-  min-height: 50px;
+  min-height: 5vh;
+  vertical-align: bottom;
 }
 
 .my-message {
@@ -91,7 +92,7 @@ input[type="text"]:focus {
 }
 .navbar {
   height: 5vh;
-  min-height: 50px;
+  min-height: 5vh;
 }
 
 .users {
@@ -113,6 +114,7 @@ li.nav-item {
 }
 .user-tabs {
   flex-wrap: nowrap;
+  border:none;
 }
 ul {
   max-height: 90vh;
@@ -123,6 +125,11 @@ ul {
 
 * {
   box-sizing: border-box;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+.modal {
+  background-color: black!important;
 }
 /* ul,li,a{
   box-sizing: border-box;

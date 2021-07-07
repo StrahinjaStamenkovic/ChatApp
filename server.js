@@ -1,3 +1,4 @@
+//const {Message} = require("./src/message.ts");
 const express = require("express");
 const app = express();
 const http = require("http").Server(app);
@@ -78,21 +79,22 @@ listenOnConnect("chat message").subscribe(({ client, data }) => {
   to.id === "everyone"
     ? client.broadcast.emit("chat message", {
         from,
-        message,
+        payload: message,
         to: { id: "everyone", username: "Everyone" },
       }) // Send to everyone
-    : client.to(to.id).emit("chat message", { from, message, to }); // Send only to socket
+    : client.to(to.id).emit("chat message", { from, payload: message, to }); // Send only to socket
 });
 
 // Listen for new usernames and store in corresponding socket object
 listenOnConnect("save username").subscribe(
   async ({ io, client, data: username }) => {
-    const allSockets = await io.sockets.allSockets();
+    //const allSockets = await io.sockets.allSockets();
     const id = client.id;
-
+    //if (users.find((user) => user.username !== username)) {
     users.push({ id: id, username: username });
     console.log("User connected");
     console.log(users);
     client.broadcast.emit("new user", { id, username });
+    //}
   }
 );
