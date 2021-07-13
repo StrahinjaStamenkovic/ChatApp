@@ -1,11 +1,6 @@
 import { fromEvent, of, Observable } from "rxjs";
 import { map, tap, withLatestFrom, filter, switchMap } from "rxjs/operators";
-import {
-  addMessage,
-  addUser,
-  clearUsers,
-  removeUser,
-} from "./utilities";
+import { addMessage, addUser, clearUsers, removeUser } from "./utilities";
 import { listenOnConnect, emitOnConnect } from "./connection";
 import submitAction$ from "./actions";
 import { Message } from "./message";
@@ -41,7 +36,11 @@ const submitMessage$: Observable<any> = submitAction$.pipe(
     // console.log(data.message);
     // console.log(data.to);
     addMessage(
-      new Message({ id: "", username: username }, data.message, data.to),
+      {
+        from: { id: "", username: username },
+        payload: data.message,
+        to: data.to,
+      },
       true
     );
   }),
@@ -84,4 +83,3 @@ listenOnConnect("remove user").subscribe((id) => {
   console.log("Removing user with id : " + id);
   removeUser(id);
 });
-
