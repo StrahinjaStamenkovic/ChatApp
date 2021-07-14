@@ -3,6 +3,3 @@ export interface Message {
   from: any;
   payload: string;
 }
-// module.exports = {
-//   Message,
-// };

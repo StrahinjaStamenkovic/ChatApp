@@ -28,7 +28,6 @@ const sendMessage$: Observable<string> = merge(
 
 // Message stream
 const submitAction$: Observable<any> = sendMessage$.pipe(
-  //withLatestFrom(userSelectChange$),
   map((message) => ({ message, to: currentlySelectedUser }))
 );
 

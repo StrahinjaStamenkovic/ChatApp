@@ -11,54 +11,42 @@
       integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
       crossorigin="anonymous"
     />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/fontawesome.min.css"
-    />
+
+    <script defer src="static\js\all.js"></script>
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
     <nav
-        class="
-          navbar navbar-fixed-top navbar-light
-          bg-light
-          justify-content-center
-          px-0
-          py-0
-          flex-shrink-0
-        "
-      >
-        <a class="navbar-brand mx-0 my-0">ChatApp</a>
-      </nav>
-    <div class="container-fluid px-0  d-flex flex-column">
-      
-
+      class="
+        navbar navbar-fixed-top navbar-light
+        bg-light
+        justify-content-center
+        px-0
+        py-0
+        flex-shrink-0
+      "
+    >
+      <a class="navbar-brand mx-0 my-0">ChatApp</a>
+    </nav>
+    <div class="container-fluid px-0 d-flex flex-column">
       <div class="row flex-grow-1 d-flex flex-row mx-0">
         <div class="col-2 border-right px-0">
           <div>
-            <h5 class="my-username border-bottom pl-1 my-0 align-text-bottom text-break d-flex align-items-end"></h5>
+            <h5
+              class="
+                my-username
+                border-bottom
+                pl-1
+                my-0
+                align-text-bottom
+                text-break
+                d-flex
+                align-items-end
+              "
+            ></h5>
           </div>
 
-          <ul class="nav nav-tabs user-tabs flex-column">
-            <!--
-            <li class="nav-item">
-              <a class="nav-link" href="#IDStefan" data-toggle="tab">
-                <div class="specific-username">Stefan</div>
-                <--<div class = "preview"> Cao sta radis </div> --/>
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a class="nav-link" href="#IDSofija" data-toggle="tab">Sofija</a>
-            </li>
-
-            <li class="nav-item">
-              <a class="nav-link font-weight-bolder" href="#IDTina" data-toggle="tab"> Tina</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#IDAntol" data-toggle="tab">Antol</a>
-            </li>
-          --></ul>
+          <ul class="nav nav-tabs user-tabs flex-column"></ul>
         </div>
         <div class="col-10 px-0 message-display d-flex flex-column-reverse">
           <div
@@ -86,115 +74,38 @@
               <i class="fas fa-paper-plane"></i>
             </button>
           </div>
-          <div class="tab-content user-messages-tabs">
-          <!--
-          <div role="tabpanel" class="tab-pane fade" id="empty"></div>
-            
-           <div role="tabpanel" class="tab-pane fade" id="IDStefan"> 
-              <div class="pl-2 username border-bottom username">Stefan</div>
-              <div class="tab-content d-flex flex-column-reverse" id="messages">
-                <div class="d-flex flex-row-reverse mx-2">
-                  <div
-                    class="
-                      message
-                      my-message
-                      text-break
-                      px-3
-                      py-2
-                      my-1
-                      mx-2
-                      text-left
-                    "
-                  >
-                    a
-                  </div>
-                  <div class="spacer"></div>
-                </div>
-
-                <div class="d-flex flex-row mx-2">
-                  <div
-                    class="
-                      message
-                      not-my-message
-                      text-break
-                      px-3
-                      py-2
-                      my-1
-                      mx-2
-                      text-left
-                    "
-                  >
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                    Duis aute irure dolor in reprehenderit in voluptate velit
-                    esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-                    occaecat cupidatat non proident, sunt in culpa qui officia
-                    deserunt mollit anim id est laborum.
-                  </div>
-                  <div class="spacer"></div>
-                </div>
-              </div>
-            </div>
-            <div role="tabpanel" class="tab-pane fade" id="IDSofija">
-              <div class="pl-2 username border-bottom username">Sofija</div>
-              <div class="tab-content d-flex flex-column-reverse" id="messages">
-                <div class="d-flex flex-row-reverse mx-2">
-                  <div
-                    class="
-                      message
-                      my-message
-                      text-break
-                      px-3
-                      py-2
-                      my-1
-                      mx-2
-                      text-left
-                    "
-                  >
-                    Cao Sofija
-                  </div>
-                  <div class="spacer"></div>
-                </div>
-
-                <div class="d-flex flex-row mx-2">
-                  <div
-                    class="
-                      message
-                      not-my-message
-                      text-break
-                      px-3
-                      py-2
-                      my-1
-                      mx-2
-                      text-left
-                    "
-                  >
-                    Cao Strahinja
-                  </div>
-                  <div class="spacer"></div>
-                </div>
-              </div>
-            </div>-->
-          </div>
+          <div class="tab-content user-messages-tabs"></div>
         </div>
       </div>
     </div>
 
-    <div class="modal fade" id="usernameModal" data-backdrop="static" data-keyboard="false" tabindex="-1"  aria-hidden="true">
+    <div
+      class="modal fade"
+      id="usernameModal"
+      data-backdrop="static"
+      data-keyboard="false"
+      tabindex="-1"
+      aria-hidden="true"
+    >
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="staticBackdropLabel">Enter your username</h5>
+            <h5 class="modal-title" id="staticBackdropLabel">
+              Enter your username
+            </h5>
           </div>
           <div class="modal-body">
             <label for="usernameInput">Username:</label>
-            <input type="text" id="usernameInput" required/>
+            <input type="text" id="usernameInput" required />
           </div>
           <div class="modal-footer">
-         
-            <button type="button" class="btn btn-primary" id="usernameSubmitButton">Enter</button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              id="usernameSubmitButton"
+            >
+              Enter
+            </button>
           </div>
         </div>
       </div>

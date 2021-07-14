@@ -1,11 +1,8 @@
-//const {Message} = require("./src/message.ts");
 const express = require("express");
 const app = express();
 const http = require("http").Server(app);
 const io = require("socket.io");
 const PORT = process.env.PORT || 3000;
-
-let users = [];
 
 const { of, fromEvent } = require("rxjs");
 const {
@@ -16,9 +13,14 @@ const {
   takeUntil,
 } = require("rxjs/operators");
 
+let users = [];
+
 // Serve static files
 app.use(express.static("client"));
-// app.use("/static", express.static("./static"));
+app.use(
+  "/static",
+  express.static("./node_modules/@fortawesome/fontawesome-free")
+);
 
 // Start app listening
 http.listen(PORT, () => console.log("listening on port: " + PORT));
@@ -52,7 +54,6 @@ const listenOnConnect = (event) =>
 // On connection, send array of all users
 connection$.subscribe(async ({ io, client }) => {
   console.log("Sending a list of all connected users");
-  //console.log(client.id);
   console.log(users);
   client.emit("all users", users);
 });
@@ -66,16 +67,13 @@ disconnect$.subscribe((client) => {
 
 // Listen for message events and send to relevant users
 listenOnConnect("chat message").subscribe(({ client, data }) => {
-  const from = users.find((user) => user.id === client.id); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  const from = users.find((user) => user.id === client.id);
   const { message, to } = data;
-  // const to = users.find((user) => user.id === data.id);
-  console.log(to.id);
+  console.log("[New message recieved]");
   console.log(
     `${from.id}, ${from.username}, ${message}, ${to.id}, ${to.username}`
   );
   if (!to.id) return;
-
-  console.log(`${from} , ${message} , ${to}`);
   to.id === "everyone"
     ? client.broadcast.emit("chat message", {
         from,
@@ -88,13 +86,10 @@ listenOnConnect("chat message").subscribe(({ client, data }) => {
 // Listen for new usernames and store in corresponding socket object
 listenOnConnect("save username").subscribe(
   async ({ io, client, data: username }) => {
-    //const allSockets = await io.sockets.allSockets();
     const id = client.id;
-    //if (users.find((user) => user.username !== username)) {
     users.push({ id: id, username: username });
-    console.log("User connected");
+    console.log("[New user connected]");
     console.log(users);
     client.broadcast.emit("new user", { id, username });
-    //}
   }
 );

@@ -33,8 +33,6 @@ username$.subscribe((username: string) => {
 const submitMessage$: Observable<any> = submitAction$.pipe(
   withLatestFrom(username$),
   tap(([data, username]) => {
-    // console.log(data.message);
-    // console.log(data.to);
     addMessage(
       {
         from: { id: "", username: username },
@@ -49,14 +47,11 @@ const submitMessage$: Observable<any> = submitAction$.pipe(
 
 // Send username to server
 emitOnConnect(username$).subscribe(({ socket, data }) => {
-  // console.log(data);
   socket.emit("save username", data);
 });
 
 // Send chat messages to server
 emitOnConnect(submitMessage$).subscribe(({ socket, data }) => {
-  // console.log(socket);
-  // console.log(data);
   socket.emit("chat message", data);
 });
 
