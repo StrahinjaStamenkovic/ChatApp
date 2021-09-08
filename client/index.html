@@ -16,28 +16,15 @@
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
-    <nav
-      class="
-        navbar navbar-fixed-top navbar-light
-        bg-light
-        justify-content-center
-        px-0
-        py-0
-        flex-shrink-0
-      "
-    >
-      <a class="navbar-brand mx-0 my-0">ChatApp</a>
-    </nav>
-    <div class="container-fluid px-0 d-flex flex-column">
-      <div class="row flex-grow-1 d-flex flex-row mx-0">
-        <div class="col-2 border-right px-0">
+    <div class="container-fluid d-flex flex-column">
+      <div class="row flex-grow-1 d-flex flex-row">
+        <div class="col-2 border-right">
           <div>
             <h5
               class="
-                my-username
+                my-username my-0
+                px-2
                 border-bottom
-                pl-1
-                my-0
                 align-text-bottom
                 text-break
                 d-flex
@@ -48,12 +35,11 @@
 
           <ul class="nav nav-tabs user-tabs flex-column"></ul>
         </div>
-        <div class="col-10 px-0 message-display d-flex flex-column-reverse">
+        <div class="col-10 message-display d-flex flex-column-reverse">
           <div
             class="
-              px-2
-              py-2
               d-flex
+              px-2
               justify-content-end
               align-items-center
               border-top
@@ -61,7 +47,7 @@
             "
           >
             <input
-              class="mx-2"
+              class="mr-2"
               placeholder="Aa"
               type="text"
               id="message-text-input"
@@ -79,6 +65,7 @@
       </div>
     </div>
 
+    <!-- Username modal -->
     <div
       class="modal fade"
       id="usernameModal"

@@ -8,7 +8,7 @@ const URL = "http://localhost:3000";
 export const socket$: Observable<any> = of(io());
 
 // Stream of connections
-const connect$: Observable<Socket> = socket$.pipe(
+export const connect$: Observable<Socket> = socket$.pipe(
   switchMap((socket) => fromEvent(socket, "connect").pipe(mapTo(socket)))
 );
 

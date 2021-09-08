@@ -1,17 +1,21 @@
-import { fromEvent, Observable, merge, concat } from "rxjs";
-import { map, tap, startWith } from "rxjs/operators";
-import { myUsername } from "./index";
+import { ChatBot } from "./bot";
 import { Message } from "./message";
+import { User } from "./user";
 
-export let currentlySelectedUser = { id: "everyone", username: "Everyone" };
+export let currentlySelectedUser: User = ChatBot.getInstance().botUser;
 
 export function addMessage(message: Message, myMessage: boolean) {
   const flexDirection: string = myMessage ? "flex-row-reverse" : "flex-row";
-  const messageOwner: string = myMessage ? "my-message" : "not-my-message";
+  let messageOwner: string;
+
+  if (compareObjects(ChatBot.getInstance().botUser, message.from))
+    messageOwner = "bot-message";
+  else messageOwner = myMessage ? "my-message" : "not-my-message";
+
   const nameTag: string =
     message.to.id === "everyone" ? message.from.username + ": <br />" : "";
+  //console.log(message);
 
-  console.log(message);
   $(
     `.tab-pane#${
       myMessage || message.to.id === "everyone"
@@ -39,17 +43,27 @@ export function addMessage(message: Message, myMessage: boolean) {
     `
   );
   // Scroll to bottom only on my messages
-  if (message.from.username === myUsername)
-    $(`.tab-pane#${message.to.id} > .messages`).scrollTop(0);
+  if (myMessage) $(`.tab-pane#${message.to.id} > .messages`).scrollTop(0);
+  else if (message.to.id === "everyone") {
+    if (!$(`.nav-tabs a[href="#everyone"]`).hasClass("active"))
+      $(`.nav-tabs a[href="#everyone"] > .specific-username`).addClass(
+        "font-weight-bold"
+      );
+  } else if (!$(`.nav-tabs a[href="#${message.from.id}"]`).hasClass("active"))
+    $(`.nav-tabs a[href="#${message.from.id}"] > .specific-username`).addClass(
+      "font-weight-bold"
+    );
 }
 
-export function addUser(id: string, username: string): void {
-  const active: string = id === "everyone" ? "active" : "";
-  const show: string = id === "everyone" ? "show" : "";
+export function addUser(newUser: User): void {
+  const { id, username } = newUser;
+  const active: string = newUser.id === "helperBot" ? "active" : "";
+  const show: string = newUser.id === "helperBot" ? "show" : "";
+
   $(".user-tabs").append(
     `
     <li class="nav-item">
-      <a class="nav-link px-1 ${active}" href="#${id}" data-toggle="tab">
+      <a class="nav-link ${active}" href="#${id}" data-toggle="tab">
         <div class="specific-username text-break">${username}</div>
       </a>
     </li>
@@ -57,7 +71,10 @@ export function addUser(id: string, username: string): void {
   );
 
   $(`.nav-tabs a[href="#${id}"]`).on("click", () => {
-    currentlySelectedUser = { id: id, username: username };
+    currentlySelectedUser = { id, username };
+    $(`.nav-tabs a[href="#${id}"] > .specific-username`).removeClass(
+      "font-weight-bold"
+    );
     $(`tab-pane.active.show`).removeClass("active show");
     $(`tab-pane#${id}`).addClass("active show");
   });
@@ -65,7 +82,7 @@ export function addUser(id: string, username: string): void {
   $(".user-messages-tabs").append(
     `
     <div role="tabpanel" class="tab-pane fade ${active} ${show}" id="${id}"> 
-      <h5 class="pl-1 my-0 username border-bottom d-flex align-items-end text-break">${username}</h5>
+      <h5 class="username mb-0 pl-2 border-bottom d-flex align-items-end text-break">${username}</h5>
       <div class="tab-content d-flex flex-column-reverse messages"></div>
     </div>
     `
@@ -81,7 +98,7 @@ export function removeUser(id: string): void {
   let tabToRemove: JQuery<HTMLElement> = $(`a[href="#${id}"]`);
   if (tabToRemove) {
     if (tabToRemove.hasClass("active"))
-      $(`a[href='#everyone']`).addClass("active");
+      $(`a[href='#everyone']`).toggleClass("active");
     tabToRemove.parent().remove();
   }
   tabToRemove = $(`#${id}`);
@@ -90,4 +107,8 @@ export function removeUser(id: string): void {
       $(`#everyone`).addClass("active show");
     tabToRemove.remove();
   }
+}
+
+export function compareObjects(firstObject: any, secondObject: any): boolean {
+  return JSON.stringify(firstObject) === JSON.stringify(secondObject);
 }

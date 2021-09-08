@@ -1,48 +1,58 @@
-import { fromEvent, of, Observable } from "rxjs";
-import { map, tap, withLatestFrom, filter, switchMap } from "rxjs/operators";
-import { addMessage, addUser, clearUsers, removeUser } from "./utilities";
-import { listenOnConnect, emitOnConnect } from "./connection";
-import submitAction$ from "./actions";
+import { fromEvent, of, Observable, combineLatest, partition } from "rxjs";
+import { map, tap, filter, switchMap, startWith } from "rxjs/operators";
+import {
+  addMessage,
+  addUser,
+  compareObjects,
+  currentlySelectedUser,
+  removeUser,
+} from "./utilities";
+import { listenOnConnect, emitOnConnect, connect$ } from "./connection";
+import { submitAction$ } from "./actions";
 import { Message } from "./message";
+import { User } from "./user";
+import { ChatBot } from "./bot";
 
-export let myUsername: string;
-let username$: Observable<string>;
+export let user: User;
+let username$: Observable<string> = of("");
+const helperBot = ChatBot.getInstance();
 
-if (window.localStorage.getItem("username")) {
+if (localStorage.getItem("username")) {
   username$ = of(window.localStorage.getItem("username"));
 } else {
   $("#usernameModal").modal("show");
   username$ = fromEvent($("#usernameSubmitButton"), "click").pipe(
-    tap((event: Event) => {
-      if ((<string>$("#usernameInput").val()).trim() === "") return;
-      myUsername = <string>$("#usernameInput").val();
-      window.localStorage.setItem("username", myUsername);
-      $(".my-username").html(myUsername);
-      $("#usernameModal").modal("hide");
-    }),
-    switchMap((event: Event) => of(myUsername)),
-    filter((username: string) => username !== "")
+    tap(() => $("#usernameModal").modal("hide")),
+    switchMap(() => of($("#usernameInput").val().toString().trim())),
+    filter((username: string) => !!username)
   );
 }
 
 username$.subscribe((username: string) => {
   $(".my-username").html(username);
+  localStorage.setItem("username", username);
 });
 
-// Add own chat messages to DOM
-const submitMessage$: Observable<any> = submitAction$.pipe(
-  withLatestFrom(username$),
-  tap(([data, username]) => {
-    addMessage(
-      {
-        from: { id: "", username: username },
-        payload: data.message,
-        to: data.to,
-      },
-      true
-    );
-  }),
-  map(([data, username]) => data)
+//Stream of user data
+export const user$: Observable<User> = combineLatest([
+  connect$,
+  username$,
+]).pipe(map(([socket, username]) => ({ id: socket?.id, username })));
+
+user$.subscribe((emitedUser) => {
+  user = emitedUser;
+  helperBot.createBotTab();
+});
+
+export const partitionedMessage$: Observable<Message>[] = partition(
+  submitAction$,
+  (message) =>
+    compareObjects(currentlySelectedUser, helperBot.botUser) ||
+    message.payload.startsWith("!")
+);
+
+const submitMessage$: Observable<Message> = partitionedMessage$[1].pipe(
+  tap((message) => console.log(message))
 );
 
 // Send username to server
@@ -52,6 +62,7 @@ emitOnConnect(username$).subscribe(({ socket, data }) => {
 
 // Send chat messages to server
 emitOnConnect(submitMessage$).subscribe(({ socket, data }) => {
+  console.log(data);
   socket.emit("chat message", data);
 });
 
@@ -62,19 +73,17 @@ listenOnConnect("chat message").subscribe((message: Message) => {
 });
 
 // Listen for list of all connected users
-listenOnConnect("all users").subscribe((users: Array<any>) => {
-  clearUsers();
-  addUser("everyone", "Everyone");
-  users.forEach(({ id, username }) => addUser(id, username));
+listenOnConnect("all users").subscribe((users: Array<User>) => {
+  addUser({ id: "everyone", username: "Everyone" });
+  users.forEach((userElement) => addUser(userElement));
 });
 
 // Listen for new users
-listenOnConnect("new user").subscribe(({ id, username }) => {
-  addUser(id, username);
+listenOnConnect("new user").subscribe((newUser) => {
+  addUser(newUser);
 });
 
 // Listen for user removals
-listenOnConnect("remove user").subscribe((id) => {
-  console.log("Removing user with id : " + id);
+listenOnConnect("remove user").subscribe(({ id, username }) => {
   removeUser(id);
 });

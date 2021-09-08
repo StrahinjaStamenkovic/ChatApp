@@ -60,27 +60,36 @@ connection$.subscribe(async ({ io, client }) => {
 
 // On disconnect, tell other users, also remove the entry from users set
 disconnect$.subscribe((client) => {
-  client.broadcast.emit("remove user", client.id);
-  console.log(`Seinding user id to remove : ${client.id}`);
-  users = users.filter((user, index) => user.id !== client.id);
+  const userToRemove = users.find((user) => user.id === client.id);
+  client.broadcast.emit("remove user", userToRemove);
+  console.log("[User disconnected]");
+  console.log(
+    `Seinding user data to remove :\n (${userToRemove.id}, ${userToRemove.username})`
+  );
+  users = users.filter((user) => user.id !== client.id);
 });
 
 // Listen for message events and send to relevant users
 listenOnConnect("chat message").subscribe(({ client, data }) => {
-  const from = users.find((user) => user.id === client.id);
-  const { message, to } = data;
+  const { from, payload, to } = data;
   console.log("[New message recieved]");
+  console.log(to);
   console.log(
-    `${from.id}, ${from.username}, ${message}, ${to.id}, ${to.username}`
+    `${from.id}, ${from.username}, ${payload}, ${to.id}, ${to.username}`
   );
-  if (!to.id) return;
+
+  if (to.id !== "everyone" && !users.some((user) => user.id === to.id)) {
+    console.log("[Error] No such recipient found in servers user record");
+    return;
+  }
+
   to.id === "everyone"
     ? client.broadcast.emit("chat message", {
         from,
-        payload: message,
-        to: { id: "everyone", username: "Everyone" },
+        payload,
+        to,
       }) // Send to everyone
-    : client.to(to.id).emit("chat message", { from, payload: message, to }); // Send only to socket
+    : client.to(to.id).emit("chat message", { from, payload, to }); // Send only to socket
 });
 
 // Listen for new usernames and store in corresponding socket object

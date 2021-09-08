@@ -1,5 +1,7 @@
+import { User } from "./user";
+
 export interface Message {
-  to: any;
-  from: any;
+  to: User;
+  from?: User;
   payload: string;
 }
